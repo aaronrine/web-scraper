@@ -1,8 +1,12 @@
 from bs4 import BeautifulSoup
 import requests
 
-html = requests.get('https://www.marketwatch.com/tools/marketsummary').text
-soup = BeautifulSoup(html, 'lxml')
+uri = 'https://www.marketwatch.com/tools/marketsummary'
+response = requests.get(uri)
+if (response.status_code != 200):
+  raise Exception("Unable to access website")
+
+soup = BeautifulSoup(response.text, 'lxml')
 table = soup.find("table", id="marketsummaryindexes")
 
 all_table_data = table.find_all("td")
