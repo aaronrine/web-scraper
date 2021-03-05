@@ -15,41 +15,32 @@ def get_website(uri):
 
 
 def get_table_data():
-    all_table_data = get_website("https://www.marketwatch.com/tools/marketsummary").find(
-        "table", id="marketsummaryindexes").find_all("td")
-
-    for table_data in all_table_data:
-        data_list.append(table_data.a['title']) if table_data.a else data_list.append(
-            table_data.text)
+    return [
+        table_data.a['title'] if table_data.a else table_data.text
+        for table_data in get_website("https://www.marketwatch.com/tools/marketsummary").find(
+            "table", id="marketsummaryindexes").find_all("td")
+    ]
 
 
 def data_processor():
-    get_table_data()
-
-    def chunks(array, length):
-        for i in range(0, len(array), length):
-            yield array[i:i+length]
-
-    grouped_data_list = list(chunks(data_list, 4))
-
     data = dict()
-    for grouped_data in grouped_data_list[1:]:
-        name, value = grouped_data[::2]
+    raw_data = get_table_data()[4:]
+    for index, name in enumerate(raw_data[::4]):
+        value = raw_data[index*4+2]
         data[name] = float(value.replace('+', ''))
     return data
 
 
 def make_plot():
     data = data_processor()
-    names = list(data.keys())
-    movement = list(data.values())
     y_val = numpy.arange(len(names))
-    pyplot.bar(y_val, movement, align='center')
-    pyplot.xticks(y_val, names, rotation=45, ha="right")
+    pyplot.bar(y_val, data.values(), align='center')
+    pyplot.xticks(y_val, data.keys(), rotation=45, ha="right")
     pyplot.ylabel('Market Movement')
     pyplot.xlabel('Market Indexes')
     pyplot.title("Market Overview")
     pyplot.show()
 
 
-make_plot()
+if __name__ == "__main__":
+    make_plot()
