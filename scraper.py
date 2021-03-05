@@ -1,6 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
-from data import data_list
+from matplotlib import pyplot
+import numpy
+
+data_list = []
+name_list = []
+value_list = []
 
 uri = 'https://www.marketwatch.com/tools/marketsummary'
 response = requests.get(uri)
@@ -24,16 +29,31 @@ def chunks(array, length):
         yield array[i:i+length]
 
 
-def filter_index(index):
-    index_expression = (index + 1) % 2 != 0
-    if(index_expression):
-        return True
-    else:
-        return False
+def coordinated_pop(array1, array2, index):
+    array1.pop(index)
+    array2.pop(index)
 
 
 grouped_data_list = list(chunks(data_list, 4))
 for grouped_data in grouped_data_list:
     for index, item in enumerate(grouped_data):
-        if(filter_index(index)):
-            print(item)
+        if (index == 0):
+            name_list.append(item)
+        elif (index == 2):
+            if('+' in item):
+                cleaned_item = item.replace('+', '')
+                value_list.append(float(cleaned_item))
+            else:
+                value_list.append(float(item))
+
+coordinated_pop(name_list, value_list, 0)
+names = name_list
+y_val = numpy.arange(len(names))
+movement = value_list
+pyplot.bar(y_val, movement, align='center')
+pyplot.xticks(y_val, names, rotation=45, ha="right")
+pyplot.ylabel('Market Movement')
+pyplot.xlabel('Market Indexes')
+pyplot.title("Market Overview")
+
+pyplot.show()
