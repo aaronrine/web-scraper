@@ -6,22 +6,16 @@ import numpy
 data_list = []
 
 
-def get_response(uri):
+def get_website(uri):
     response = requests.get(uri)
     if (response.status_code != 200):
         raise Exception("Unable to access website")
-    return response
-
-
-def get_website():
-    raw_website = get_response(
-        'https://www.marketwatch.com/tools/marketsummary').text
-    website = BeautifulSoup(raw_website, 'lxml')
+    website = BeautifulSoup(response.text, 'lxml')
     return website
 
 
-def set_table_data():
-    all_table_data = get_website().find(
+def get_table_data():
+    all_table_data = get_website("https://www.marketwatch.com/tools/marketsummary").find(
         "table", id="marketsummaryindexes").find_all("td")
 
     for table_data in all_table_data:
@@ -30,7 +24,7 @@ def set_table_data():
 
 
 def data_processor():
-    set_table_data()
+    get_table_data()
 
     def chunks(array, length):
         for i in range(0, len(array), length):
