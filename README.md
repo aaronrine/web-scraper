@@ -4,9 +4,9 @@
 
 ### Tech Stack
 
-Python 3.9.2 <br>
-BeautifulSoup4 <br>
-Matplotlib
+`Python 3.9.2` <br>
+`BeautifulSoup4` <br>
+`Matplotlib`
 
 ### Project Purpose
 
@@ -18,6 +18,8 @@ This is a very small yet effective script that pulls information about stock mar
 
 ## How to Run
 
+`Note: Steps 1 and 2 are only needed for first time setup.`
+
 ### Step 1
 
 Install Python for your system:  
@@ -25,7 +27,7 @@ https://wiki.python.org/moin/BeginnersGuide/Download
 
 ### Step 2
 
-Download the repo
+Download the repo from github:
 
 ```bash
   $ cd #whatever directory you want to install into
@@ -34,7 +36,7 @@ Download the repo
 
 ### Step 3
 
-Start the virtual environment
+Setup and start the virtual environment:
 
 ```bash
   $ python -m venv venv
@@ -45,7 +47,7 @@ Start the virtual environment
 
 ### Step 4
 
-Run the Script
+Run the Script:
 
 ```bash
   $ python scraper.py
@@ -53,7 +55,7 @@ Run the Script
 
 ### Step 5
 
-Exit virtual environment
+Exit the virtual environment when you are finished using the program:
 
 ```bash
   $ deactivate
